@@ -8,7 +8,6 @@ describe Attache::Download do
   let(:params) { {} }
   let(:filename) { "hello#{rand}.gif" }
   let(:reldirname) { "path#{rand}" }
-  # let(:geometry) { CGI.escape('2x2#') }
   let(:secret_key) { "abc123" }
   let(:instructions) { [["resize", "2x2"]] }
   let(:instruction_string) { Base64.urlsafe_encode64(JSON.generate(instructions), padding: false) }
@@ -139,7 +138,7 @@ describe Attache::Download do
           let(:filename) { "hello#{rand}.txt" }
 
           it 'should output as png' do
-            expect_any_instance_of(Attache::ResizeJob).to receive(:make_nonimage_preview).exactly(1).times.and_call_original
+            expect_any_instance_of(Attache::ProcessFileJob).to receive(:make_nonimage_preview).exactly(1).times.and_call_original
             code, headers, body = subject.call
             expect(code).to eq(200)
             expect(headers['Content-Type']).to eq("image/png")
@@ -148,7 +147,7 @@ describe Attache::Download do
 
         context 'image' do
           it 'should output as gif' do
-            expect_any_instance_of(Attache::ResizeJob).not_to receive(:make_nonimage_preview)
+            expect_any_instance_of(Attache::ProcessFileJob).not_to receive(:make_nonimage_preview)
             code, headers, body = subject.call
             expect(code).to eq(200)
             expect(headers['Content-Type']).to eq("image/gif")
