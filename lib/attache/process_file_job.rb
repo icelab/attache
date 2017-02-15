@@ -8,7 +8,7 @@ class Attache::ProcessFileJob
     return StringIO.new if closed_file.try(:size).to_i == 0
 
     Attache.logger.info "[POOL] start"
-    transform_image(closed_file, instructions)
+    process_image(closed_file, instructions)
   rescue MiniMagick::Invalid
     make_nonimage_preview(closed_file, basename)
   ensure
@@ -47,7 +47,7 @@ class Attache::ProcessFileJob
       str.to_s.gsub(/[^\w\.]/, '_')
     end
 
-    def transform_image(closed_file, instructions, max: 2048)
+    def process_image(closed_file, instructions, max: 2048)
       image = MiniMagick::Image.open(closed_file.path)
 
       image.combine_options do |b|
