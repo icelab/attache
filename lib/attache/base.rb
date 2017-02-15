@@ -14,10 +14,6 @@ class Attache::Base
     Attache.logger.error $@
     Attache.logger.error $!
     Attache.logger.error "ERROR 500 #{env['PATH_INFO']} REFERER #{env['HTTP_REFERER'].inspect}"
-
-    # Helpful while testing
-    raise e
-
     [500, { 'X-Exception' => $!.to_s }, []]
   end
 
