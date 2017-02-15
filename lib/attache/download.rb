@@ -5,7 +5,7 @@ require 'rack'
 require 'openssl'
 
 class Attache::Download < Attache::Base
-  RESIZE_JOB_POOL = ConnectionPool.new(JSON.parse(ENV.fetch('RESIZE_POOL') { '{ "size": 2, "timeout": 60 }' }).symbolize_keys) { Attache::ResizeJob.new }
+  PROCESS_JOB_POOL = ConnectionPool.new(JSON.parse(ENV.fetch('RESIZE_POOL') { '{ "size": 2, "timeout": 60 }' }).symbolize_keys) { Attache::ProcessFileJob.new }
 
   def initialize(app)
     @app = app
@@ -87,7 +87,7 @@ class Attache::Download < Attache::Base
         tempfile = nil
         Attache.cache.fetch(cachekey) do
           Attache.logger.info "[POOL] new job"
-          tempfile = RESIZE_JOB_POOL.with do |job|
+          tempfile = PROCESS_JOB_POOL.with do |job|
             job.perform(instructions, basename) do
               # opens up possibility that job implementation
               # does not require we download original file prior

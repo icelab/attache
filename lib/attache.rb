@@ -49,7 +49,7 @@ Attache.cache      = DiskStore.new(Attache.localdir, {
 Attache.publicdir = ENV.fetch("PUBLIC_DIR") { File.expand_path("../public", File.dirname(__FILE__)) }
 
 require 'attache/job'
-require 'attache/resize_job'
+require 'attache/process_file_job'
 require 'attache/base'
 require 'attache/vhost'
 require 'attache/upload_url'

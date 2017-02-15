@@ -2,7 +2,7 @@ require 'digest/sha1'
 require 'stringio'
 require 'mini_magick'
 
-class Attache::ResizeJob
+class Attache::ProcessFileJob
   def perform(instructions, basename, t = Time.now)
     closed_file = yield
     return StringIO.new if closed_file.try(:size).to_i == 0
