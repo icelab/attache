@@ -16,4 +16,4 @@ COPY . /app/src
 RUN bundle install
 
 EXPOSE 5000
-CMD bundle exec ./exe/attache start -c web=1
+CMD ./exe/attache start -c web=1
